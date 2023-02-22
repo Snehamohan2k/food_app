@@ -1,10 +1,30 @@
-import { useReducer } from 'react';
+import { useReducer , useEffect} from 'react';
 
 import CartContext from './cart-context';
 
+const getLocalCartValue=()=>{
+  let newCartValue=localStorage.getItem("LocalCartValues");
+  if(newCartValue===[])
+  {
+    return [];
+  }
+  else{
+    return JSON.parse(newCartValue);
+  }
+}
+const getLocalAmount=()=>{
+  let newAmountValue=localStorage.getItem("LocalAmount");
+  if(newAmountValue===[])
+  {
+    return [];
+  }
+  else{
+    return JSON.parse(newAmountValue);
+  }
+}
 const defaultCartState = {
-  items: [],
-  totalAmount: 0,
+  items: getLocalCartValue(),
+  totalAmount: getLocalAmount(),
 };
 
 const cartReducer = (state, action) => {
@@ -59,8 +79,7 @@ const cartReducer = (state, action) => {
 };
 
 const CartProvider = (props) => {
-  const [cartState, dispatchCartAction] = useReducer(
-    cartReducer,
+  const [cartState, dispatchCartAction] = useReducer(cartReducer,
     defaultCartState
   );
 
@@ -79,6 +98,14 @@ const CartProvider = (props) => {
     removeItem: removeItemFromCartHandler,
   };
 
+
+  useEffect(()=>{
+    localStorage.setItem("LocalCartValues",JSON.stringify(cartState.items))
+  },[cartState.items]);
+  useEffect(()=>{
+    localStorage.setItem("LocalAmount",JSON.stringify(cartState.totalAmount))
+  },[cartState.totalAmount]);
+  
   return (
     <CartContext.Provider value={cartContext}>
       {props.children}
