@@ -19,7 +19,9 @@ const MealItem = (props) => {
   };
 
   return (
-    <li className={classes.meal}>
+     
+     <li className={classes.meal}>
+   
       <div>
         <h3>{props.name}</h3>
         <div className={classes.description}>{props.description}</div>
@@ -28,7 +30,19 @@ const MealItem = (props) => {
       <div>
         <MealItemForm id={props.id} onAddToCart={addToCartHandler} />
       </div>
-    </li>
+      </li>
+//     <li className={classes.meal} style={{ display: 'flex', justifyContent: 'center',alignItems: 'center', flexDirection: 'row'  }}>
+//   <div style={{ flexGrow: 1, flexShrink: 0 }}>
+//     <h3>{props.name}</h3>
+//     <div className={classes.description}>{props.description}</div>
+//     <div className={classes.price}>{price}</div>
+//   </div>
+//   <div style={{ flexShrink: 0 }}>
+//     <MealItemForm id={props.id} onAddToCart={addToCartHandler} />
+//   </div>
+// </li>
+
+   
   );
 };
 

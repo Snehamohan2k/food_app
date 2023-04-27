@@ -1,13 +1,28 @@
 .meals {
   max-width: 60rem;
-  width: 90%;
-  margin: 2rem auto;
+  width: 90%; 
+   margin: 2rem auto; 
+  display: flex;
+  justify-content: center;
+  /* justify-items: center; */
+  /* flex-direction: row; */
   animation: meals-appear 1s ease-out forwards;
 }
-
+.Mealserror{
+  text-align: center;
+  color: red;
+}
+.MealsLoading{
+  text-align: center;
+  color: white;
+}
 .meals ul {
   list-style: none;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-items: center;
   padding: 0;
 }
 
