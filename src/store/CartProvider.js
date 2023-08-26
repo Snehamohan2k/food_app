@@ -1,31 +1,37 @@
-import { useReducer , useEffect} from 'react';
+import { useReducer } from 'react';
 
 import CartContext from './cart-context';
 
-const getLocalCartValue=()=>{
-  let newCartValue=localStorage.getItem("LocalCartValues");
-  if(newCartValue===[])
-  {
-    return [];
-  }
-  else{
-    return JSON.parse(newCartValue);
-  }
-}
-const getLocalAmount=()=>{
-  let newAmountValue=localStorage.getItem("LocalAmount");
-  if(newAmountValue===[])
-  {
-    return [];
-  }
-  else{
-    return JSON.parse(newAmountValue);
-  }
-}
+// const getLocalCartValue=()=>{
+//   let newCartValue=localStorage.getItem("LocalCartValues");
+//   if(newCartValue===[])
+//   {
+//     return [];
+//   }
+//no condition reqd 
+//   else{
+//     return JSON.parse(newCartValue);
+//   }
+// }
+// const getLocalAmount=()=>{
+//   let newAmountValue=localStorage.getItem("LocalAmount");
+//   if(newAmountValue===[])
+//   {
+//     return [];
+//   }
+//   else{
+//     return JSON.parse(newAmountValue);
+//   }
+// }
+// const defaultCartState = {
+//   items: getLocalCartValue(),
+//   totalAmount: getLocalAmount(),
+// };
 const defaultCartState = {
-  items: getLocalCartValue(),
-  totalAmount: getLocalAmount(),
+  items: [],
+  totalAmount: 0,
 };
+
 
 const cartReducer = (state, action) => {
   if (action.type === 'ADD') {
@@ -75,11 +81,16 @@ const cartReducer = (state, action) => {
     };
   }
 
+  if (action.type === 'CLEAR') {
+    return defaultCartState;
+  }
+
   return defaultCartState;
 };
 
 const CartProvider = (props) => {
-  const [cartState, dispatchCartAction] = useReducer(cartReducer,
+  const [cartState, dispatchCartAction] = useReducer(
+    cartReducer,
     defaultCartState
   );
 
@@ -91,20 +102,29 @@ const CartProvider = (props) => {
     dispatchCartAction({ type: 'REMOVE', id: id });
   };
 
+  const clearCartHandler = () => {
+    dispatchCartAction({type: 'CLEAR'});
+  };
+
   const cartContext = {
     items: cartState.items,
     totalAmount: cartState.totalAmount,
     addItem: addItemToCartHandler,
     removeItem: removeItemFromCartHandler,
+    clearCart: clearCartHandler
   };
 
+  
 
-  useEffect(()=>{
-    localStorage.setItem("LocalCartValues",JSON.stringify(cartState.items))
-  },[cartState.items]);
-  useEffect(()=>{
-    localStorage.setItem("LocalAmount",JSON.stringify(cartState.totalAmount))
-  },[cartState.totalAmount]);
+  // useEffect(()=>{
+  //   localStorage.setItem("LocalCartValues",JSON.stringify(cartState.items))
+  //   console.log("coming here");
+  // },[cartState.items]);
+  // useEffect(()=>{
+  //   localStorage.setItem("LocalAmount",JSON.stringify(cartState.totalAmount))
+  //   console.log("coming there");
+
+  // },[cartState.totalAmount]);
   
   return (
     <CartContext.Provider value={cartContext}>
@@ -114,3 +134,4 @@ const CartProvider = (props) => {
 };
 
 export default CartProvider;
+
